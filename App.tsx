@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Button, Text, View, ViewStyle, TextStyle, Dimensions } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import DashboardScreen from './Screens/Dashboard';
+import LoginScreen from './Screens/Login';
+import RegisterScreen from './Screens/Register';
+
 import Geolocation from '@react-native-community/geolocation';
-import { BleManager, Characteristic } from 'react-native-ble-plx';
+import { BleError, BleManager, Characteristic, Device } from 'react-native-ble-plx';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { Buffer } from 'buffer';
+import { NavigationContainer } from '@react-navigation/native';
 
 interface Styles {
   heading: TextStyle;
@@ -21,6 +28,8 @@ interface DevicesInfo{
 }
 const manager = new BleManager();
 
+const Stack = createNativeStackNavigator();
+
 export default function App() {
   const [BatteryLevel,setBatteryLevel]=useState(69);
   
@@ -33,15 +42,18 @@ export default function App() {
   // runs start of app
   useEffect(()=>{
     initialFetch();
-    const subscription = manager.onStateChange((state) => {
-      if (state === 'PoweredOn') {
-        scanAndConnect();
-        subscription.remove();
-      }else{
-        console.log("not working!")
-      }
-    }, true);
-    return () => manager.destroy();
+
+    // BLE Service initiate
+
+    // const subscription = manager.onStateChange((state) => {
+    //   if (state === 'PoweredOn') {
+    //     scanAndConnect();
+    //     subscription.remove();
+    //   }else{
+    //     console.log("not working!")
+    //   }
+    // }, true);
+    // return () => manager.destroy();
   },[]);
 
   const scanAndConnect = () => {
@@ -99,7 +111,7 @@ export default function App() {
     });
   };
 
-  const initialFetch=()=>{
+  const initialFetch = ()=>{
     Geolocation.getCurrentPosition((info)=> {
       setPosition({latitude:info.coords.latitude,longitude:info.coords.longitude});
     });
@@ -109,30 +121,14 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor:Colors.white,height:Dimensions.get('window').height}}>
-      <Text style={styles.heading}>PID Values from Sensors</Text>
-      <View style={styles.element}>
-        <Text style={{ fontWeight: '900' as any }}>Speed: </Text>
-        <Text>{speed} Kph</Text>
-      </View>
-      <View style={styles.element}>
-        <Text style={{ fontWeight: '900' as any }}>latitude: </Text>
-        <Text>{position.latitude} °</Text>
-      </View>
-      <View style={styles.element}>
-        <Text style={{ fontWeight: '900' as any }}>longitude: </Text>
-        <Text>{position.longitude} °</Text>
-      </View>
-      <View style={styles.element}>
-        <Text style={{ fontWeight: '900' as any }}>Ethanol Fuel %: </Text>
-        <Text>46 %</Text>
-      </View>
-      <View style={styles.element}>
-        <Text style={{ fontWeight: '900' as any }}>Battery level ESP32 %: </Text>
-        <Text>{BatteryLevel} %</Text>
-      </View>
-      <Button title="Click me" onPress={increment} />
-    </SafeAreaView>
+      <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Dashboard" component={DashboardScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
+      </Stack.Navigator>
+      </NavigationContainer>
+    
   );
 }
 
@@ -151,3 +147,5 @@ const styles = StyleSheet.create<Styles>({
     borderBottomWidth: 2,
   }
 });
+
+
