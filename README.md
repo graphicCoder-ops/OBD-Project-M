@@ -12,6 +12,15 @@ Access all on-board sensors in your car through a simple and intuitive app desig
   - Know how critical each issue is, instantly.
 - **Alerts & Notifications**: Get notified when critical issues arise.
 
+# Beautiful Dashboard
+![image](https://github.com/user-attachments/assets/2ff5c6d8-7f7c-43b2-ad79-4306b6d2062c)
+# DTC Analysis
+![image](https://github.com/user-attachments/assets/48464901-39f2-44a0-8b12-7e0ebb756207)
+# PID values
+![image](https://github.com/user-attachments/assets/bbe37144-22ff-4977-9337-d460e841f238)
+# CO2 Predictions
+![image](https://github.com/user-attachments/assets/60a02147-d97b-4e31-aefe-c1914df3877e)
+
 
 # Getting Started
 
